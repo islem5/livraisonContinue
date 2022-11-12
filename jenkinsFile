@@ -1,0 +1,43 @@
+pipeline {
+	agent any
+	stages {
+		stage('PULL') {
+		 steps {
+      script {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+          userRemoteConfigs: [[
+            credentialsId: 'cf802cbe-f201-4c66-9252-0be62683e096',
+            url : 'https://github.com/islem5/livraisonContinue']]])
+			
+			        }
+		         }
+            }
+		stage('BUILD') {
+		 steps {
+      script {
+        sh "ansible-playbook Ansible/build.yml -i Ansible/inventory/host.yml"
+             }
+            }
+        }
+ 		stage('DOCKER') {
+		 steps {
+      script {
+        sh "ansible-playbook Ansible/docker.yml -i Ansible/inventory/host.yml"
+             }
+            }
+        }
+		stage('DOCKER LOGIN'){
+            	steps{
+			
+                sh 'docker login -u khaoularajhi -p khaoula07494213'
+            }
+        }
+ 		stage('DOCKER-REGISTRY') {
+		 steps {
+      script {
+        sh "ansible-playbook Ansible/docker-registry.yml -i Ansible/inventory/host.yml"
+             }
+            }
+        }
+      }
+      }
