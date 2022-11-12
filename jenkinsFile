@@ -7,7 +7,7 @@ pipeline {
         checkout([$class: 'GitSCM', branches: [[name: '*/master']],
           userRemoteConfigs: [[
             credentialsId: 'cf802cbe-f201-4c66-9252-0be62683e096',
-            url : 'https://github.com/islem5/livraisonContinue']]])
+            url : 'https://github.com/islem5/livraisonContinue.git']]])
 			
 			        }
 		         }
