@@ -19,5 +19,26 @@ pipeline {
              }
             }
         }
-		}
+    stage('DOCKER') {
+		 steps {
+      script {
+        sh "ansible-playbook ansible/docker.yml -i ansible/inventory/host.yml"
+             }
+            }
+        }
+		stage('DOCKER LOGIN'){
+            	steps{
+			
+                sh 'docker login -u islemmaamer -p 203JFT1353'
+            }
+        }
+ 		stage('DOCKER-REGISTRY') {
+		 steps {
+      script {
+        sh "ansible-playbook ansible/docker-registry.yml -i ansible/inventory/host.yml"
+             }
+            }
+        }
       }
+      }
+      
